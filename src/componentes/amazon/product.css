@@ -1,0 +1,126 @@
+.p_width{
+    width: 180px;
+    height: auto;
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.p_width:hover{
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+.justify{
+    justify-content: space-evenly;
+}
+.s_parent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 97vh; 
+}
+.s_child{
+    display: flex;
+    width: 50%;
+    flex-wrap: wrap;
+    background-color: white;
+    padding: 5px;
+    padding: 10px;
+}
+.filter{
+    position: fixed;
+    background-color: white;
+    right: 12px;
+    bottom: 10px;
+    width: 49px;
+    height: 49px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    cursor: pointer;
+}
+.filterIcon{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.modal-warper{
+    position: fixed;
+    background-color: #a1a1a1;
+    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+.modal-containt{
+    background-color: white;
+    padding: 15px;
+    position: fixed;
+    width: auto;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    z-index: 2;
+}
+.search-containt{
+    padding: 15px;
+    position: fixed;
+    width: auto;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+}
+.search-containt img{
+    width: 200px;
+    height: 200px;
+}
+.pl-10{
+    padding-left: 10px;
+}
+@media (max-width:600px){
+    .s_child{
+        width: 100%;
+      
+    }
+    .s_parent {
+        display: flex;
+        align-items: initial;
+        justify-content: initial;
+        height: 100%;
+    }
+}
+@media (max-width:440px){
+    .p_width{
+        width: 100%;
+    }
+}
+
+.grow {
+    height:100px;
+    width:100px;
+    border-radius: 100%;
+  
+  }
+  .grow1 {
+    width: 200px;
+    height: 200px;
+    margin-top: -120px;
+    margin-left: -120px;
+    animation: scale1 9s infinite;
+    transition: all .2s ease-out;
+  }
+  
+  
+  @keyframes scale1 {
+      0% {transform: scale(1.3);
+    }
+      50% {transform: scale(2);
+    }
+     100% {transform: scale(1.3);
+   }
+  }

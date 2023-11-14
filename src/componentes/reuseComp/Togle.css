@@ -1,0 +1,19 @@
+.t_header{
+    padding: 0px 10px;
+    border: 1px solid #757575b0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+.p10{
+    padding:0 15px;
+    border: 1px solid #757575b0;
+}
+.abc{
+    border-bottom: 0;
+}
+.upDown{
+    width: 44px;
+    height: 44px;
+}
