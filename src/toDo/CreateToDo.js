@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ToDoList from "./ToDoList";
 import "./todo.css";
-import error from "./ToDoError";
+import axiox from "axios";
 const CreateToDo = () => {
   const [todo, setToDo] = useState({
     heading: "",
@@ -15,7 +15,13 @@ const CreateToDo = () => {
   const [editTodo, setEditToDo] = useState(false);
   const [editTodoID, setEditToDoID] = useState(null);
   const [hideShoeForm, setHideShoeForm] = useState(true);
-  const [inputError, setInputError] = useState({
+  const [btnDisable, setBtnDisable] = useState(true);
+  const [validation, setSalidation] = useState({
+    heading: false,
+    description: false,
+    color: false,
+  });
+  const [errorMsg, setErrorMsg] = useState({
     heading: "",
     description: "",
     color: "",
@@ -23,49 +29,122 @@ const CreateToDo = () => {
 
   const changeEvent = (e) => {
     const { name, value } = e.target;
+    checkError(name, value)
     if (editTodo) {
       setToDo({ ...todo, [name]: value });
     } else {
-      setToDo({ ...todo, [name]: value, toDoId: new Date().getTime() });
+      setToDo({ ...todo, [name]: value });
     }
+  };
+
+  const rerorMsgA = (name, value, text) => {
+    setSalidation({ ...validation, [name]: text });
+    setErrorMsg({ ...errorMsg, [name]: text });
+  };
+
+  const checkError = (name, value) => {
+    switch (name) {
+      case "heading":
+        {
+          if (value.length == "") {
+            rerorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else if (value.length < 3) {
+            rerorMsgA(name, true, "required more then 3");
+            setBtnDisable(true);
+          } else {
+            setBtnDisable(false);
+            rerorMsgA(name, false, "");
+          }
+        }
+        break;
+      case "description":
+        {
+          if (value.length == "") {
+            rerorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else if (value.length < 10) {
+            rerorMsgA(name, true, "required more then 10");
+            setBtnDisable(true);
+          } else {
+            rerorMsgA(name, false, "");
+            setBtnDisable(false);
+          }
+        }
+        break;
+      case "color":
+        {
+          if (value.length == "") {
+            rerorMsgA(name, true, "it should not empty");
+          } else {
+            rerorMsgA(name, false, "");
+          }
+        }
+        break;
+    }
+  };
+
+  const callApi = async () => {
+    const res = await axiox.get(`${process.env.REACT_APP_TODO_API_KEY}`);
+    setToDos(res.data.data);
   };
 
   const formEvent = (e) => {
     e.preventDefault();
-    setInputError(error(todo));
-    if (
-      (inputError.heading && inputError.description && inputError.color) ||
-      Object.keys(error(todo)).length == 0
-    ) {
-      if (editTodo) {
-        let updatedToDo = todos.map((val, i) => {
-          if (val.toDoId == editTodoID) {
-            return { val, ...todo };
-          } else {
-            return val;
-          }
+
+    if (editTodo) {
+      // let updatedToDo = todos.map((val, i) => {
+      //   if (val.toDoId == editTodoID) {
+      //     return { val, ...todo };
+      //   } else {
+      //     return val;
+      //   }
+      // });
+      // setToDos(updatedToDo);
+      // setEditToDo(false);
+      // setToDo({
+      //   heading: "",
+      //   description: "",
+      //   color: "",
+      // });
+      axiox
+        .put(`${process.env.REACT_APP_TODO_API_KEY}${editTodoID}`, todo)
+        .then((res) => {
+          console.log(res);
+          callApi();
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        setToDos(updatedToDo);
-        setEditToDo(false);
-        setToDo({
-          heading: "",
-          description: "",
-          color: "",
+      setToDo({
+        heading: "",
+        description: "",
+        color: "",
+      });
+      setEditToDo(false);
+    } else {
+      // setToDos([...todos, todo]);
+      axiox
+        .post(`${process.env.REACT_APP_TODO_API_KEY}`, todo)
+        .then((res) => {
+          console.log(res);
+          callApi();
+        })
+        .catch((error) => {
+          // console.log(error);
+          alert("All field required");
         });
-      } else {
-        setToDo({
-          heading: "",
-          description: "",
-          color: "",
-        });
-        setToDos([...todos, todo]);
-      }
+      setToDo({
+        heading: "",
+        description: "",
+        color: "",
+      });
     }
   };
 
   const toDoEdit = (id) => {
     let edited = todos.find((ele) => {
-      if (ele.toDoId == id) {
+      if (ele._id == id) {
         return ele;
       }
     });
@@ -75,13 +154,23 @@ const CreateToDo = () => {
   };
 
   const toDoDelete = (id) => {
-    setToDos((prev) =>
-      prev.filter((val, i) => {
-        if (i != id) {
-          return val;
-        }
+    // setToDos((prev) =>
+    //   prev.filter((val, i) => {
+    //     if (i != id) {
+    //       return val;
+    //     }
+    //   })
+    // );
+
+    axiox
+      .delete(`${process.env.REACT_APP_TODO_API_KEY}${id}`)
+      .then((res) => {
+        console.log(res);
+        callApi();
       })
-    );
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const formHideShoe = () => {
@@ -91,6 +180,7 @@ const CreateToDo = () => {
   const up = <img className="upDown" src="images/up.png" />;
 
   useEffect(() => {
+    callApi();
     document.title = "Create To Do";
     window.addEventListener("resize", () => {
       if (window.innerWidth > 600) {
@@ -119,7 +209,9 @@ const CreateToDo = () => {
                   placeholder="Heading"
                   onChange={changeEvent}
                 />
-                <span className="eRed">{inputError?.heading}</span>
+                {validation.heading && (
+                  <span className="error">{errorMsg.heading}</span>
+                )}
                 <input
                   type="text"
                   name="description"
@@ -128,7 +220,9 @@ const CreateToDo = () => {
                   value={todo.description}
                   onChange={changeEvent}
                 />
-                <span className="eRed">{inputError?.description}</span>
+                {validation.description && (
+                  <span className="error">{errorMsg.description}</span>
+                )}
                 <input
                   type="color"
                   name="color"
@@ -137,8 +231,13 @@ const CreateToDo = () => {
                   value={todo.color}
                   onChange={changeEvent}
                 />
-                <span className="eRed">{inputError?.color}</span>
-                <button className="btn">{editTodo ? "Edit" : "Create"}</button>
+
+                <button
+                  disabled={btnDisable}
+                  className={`btn ${btnDisable && "btnDisable"}`}
+                >
+                  {editTodo ? "Edit" : "Create"}
+                </button>
               </div>
             )}
 

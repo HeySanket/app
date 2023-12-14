@@ -3,6 +3,7 @@ import { BlogValue } from "../context/BlogContext";
 import { UpperCase } from "../reuseComp/UpperCase";
 import Pagination from "@mui/material/Pagination";
 import RedMore from "../reuseComp/RedMore";
+import axios from "axios";
 const BlogPagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openRedMore, setOpenRedMore] = useState(false);
@@ -16,13 +17,17 @@ const BlogPagination = () => {
     setBolgEdited,
     editedbolgID,
     setEditedbolgID,
+    callApi,
   } = useContext(BlogValue);
   const pageChange = (e, pageNumber) => {
+    console.log(blogArr.length);
+    console.log(currentPage * 3 - 3, currentPage * 3);
     setCurrentPage(pageNumber);
   };
+
   const editHandle = (id) => {
     const editedBlog = blogArr.filter((val, i) => {
-      if (val.id == id) {
+      if (val._id == id) {
         return val;
       }
     });
@@ -30,14 +35,25 @@ const BlogPagination = () => {
     setEditedbolgID(id);
     setBlog(...editedBlog);
   };
+
   const deleteHandle = (id) => {
-    const deletedBlog = blogArr.filter((val, i) => {
-      if (val.id != id) {
-        return val;
-      }
-    });
-    setBlogArr(deletedBlog);
+    // const deletedBlog = blogArr.filter((val, i) => {
+    //   if (val.id != id) {
+    //     return val;
+    //   }
+    // });
+    // setBlogArr(deletedBlog);
+    axios
+      .delete(`${process.env.REACT_APP_BLOG_API_KEY}${id}`)
+      .then((res) => {
+        console.log(res);
+        callApi();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
   const openModel = (textVal) => {
     setText(textVal);
     setOpenRedMore(!openRedMore);
@@ -48,8 +64,9 @@ const BlogPagination = () => {
       {openRedMore && <RedMore text={text} setOpenRedMore={setOpenRedMore} />}
       <div className="l_parent">
         {Array.isArray(blogArr) &&
+          blogArr.length > 0 &&
           blogArr
-            .slice(currentPage * 3 - 3, currentPage * 3)
+            .slice(currentPage * 12 - 12, currentPage * 12)
             .map((mapVal, i) => {
               return (
                 <div className="card bg" key={i}>
@@ -57,7 +74,7 @@ const BlogPagination = () => {
                   <p>{mapVal?.description.slice(0, 100)}</p>
                   {mapVal?.description.length > 100 ? (
                     <button
-                      className="editBtn"
+                      className="redMoreBtn"
                       onClick={() => openModel(mapVal?.description)}
                     >
                       Red More
@@ -67,13 +84,13 @@ const BlogPagination = () => {
                   )}
                   <button
                     className="editBtn"
-                    onClick={() => editHandle(mapVal.id)}
+                    onClick={() => editHandle(mapVal._id)}
                   >
                     Edit
                   </button>
                   <button
                     className="deleteBtn"
-                    onClick={() => deleteHandle(mapVal.id)}
+                    onClick={() => deleteHandle(mapVal._id)}
                   >
                     Delete
                   </button>
@@ -81,13 +98,17 @@ const BlogPagination = () => {
               );
             })}
       </div>
-      <Pagination
-        count={Math.ceil(blogArr.length / 3)}
-        color="primary"
-        onChange={(e, pageNumber) => pageChange(e, pageNumber)}
-      />
+      <div className="pagination">
+        <Pagination
+          count={Math.ceil(blogArr.length / 12)}
+          color="primary"
+          onChange={(e, pageNumber) => pageChange(e, pageNumber)}
+        />
+      </div>
     </div>
   );
 };
 
 export default React.memo(BlogPagination);
+
+

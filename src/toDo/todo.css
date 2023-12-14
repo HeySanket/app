@@ -51,28 +51,8 @@
   h2{
     margin: 0;
   }
-  .editBtn{
-    width: 30%;
-    padding: 7px 0;
-    background-color: beige;
-    border: navajowhite;
-    border-radius: 5px;
-    margin-right: 5px;
-    cursor: pointer;
-  }
-  .deleteBtn{
-    width: 30%;
-    cursor: pointer;
-    padding: 7px 0;
-    background-color: beige;
-    border: navajowhite;
-    border-radius: 5px;
-    margin-right: 5px;
-  }
-input{
-    width: 100%;
-    padding: 10px 0;
-}
+  
+
 .todoForm{
     margin: 0 10px;
     display: flex;

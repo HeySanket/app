@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductList from "./ProductList";
 import FilterModel from "./FilterModel";
 import ProductSearch from "./ProductSearch";
+import CreateProduct from "./CreateProduct";
 
 const Amazon = () => {
   const productData = [
@@ -217,6 +218,7 @@ const Amazon = () => {
   const [catogaryvalue, setCatogaryValue] = useState({});
   const [searchComp, setSearchComp] = useState(false);
   const [maxprice, setMaxprice] = useState(null);
+  const [showCreate, setShowCreate] = useState(false);
 
   const showHiheModal = openModel && (
     <FilterModel
@@ -227,6 +229,19 @@ const Amazon = () => {
       maxprice={maxprice}
     />
   );
+  const showHiheCreatePro = showCreate && (
+    <CreateProduct setShowCreate={setShowCreate} showCreate={showCreate} />
+  );
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_AMAZON_API_KEY)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data, "amazon");
+      });
+  }, []);
 
   useEffect(() => {
     const newFilVal = [];
@@ -292,7 +307,15 @@ const Amazon = () => {
   return (
     <>
       {showHiheModal}
+      {showHiheCreatePro}
       {searchComp ? <ProductSearch /> : <ProductList product={product} />}
+      <img
+        className="showCreate"
+        src="images/create.png"
+        onClick={() => setShowCreate(!showCreate)}
+        height={60}
+        width={60}
+      />
       <div
         className="filter"
         onClick={() => {

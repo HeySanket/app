@@ -22,15 +22,18 @@ const ToDoList = ({ todos, search, toDoEdit, toDoDelete }) => {
                 className="card"
                 key={i}
               >
-                <h2>{UpperCase(mapVal?.heading)}</h2>
+                <h2>{mapVal?.heading}</h2>
                 <p>{mapVal?.description}</p>
                 <button
                   className="editBtn"
-                  onClick={() => toDoEdit(mapVal.toDoId)}
+                  onClick={() => toDoEdit(mapVal?._id)}
                 >
                   Edit
                 </button>
-                <button className="deleteBtn" onClick={() => toDoDelete(i)}>
+                <button
+                  className="deleteBtn"
+                  onClick={() => toDoDelete(mapVal?._id)}
+                >
                   Delete
                 </button>
               </div>

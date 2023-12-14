@@ -9,8 +9,9 @@ const RedSingleBlog = () => {
   const { id } = useParams();
 
   useEffect(() => {
+   
     const singleBlog = blogArr.filter((val, i) => {
-      if (val.id == id) {
+      if (val._id == id) {
         return val;
       }
     });

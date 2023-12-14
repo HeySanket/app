@@ -79,6 +79,10 @@ cursor: pointer;
     padding-left: 10px;
     cursor: pointer;
   }
+  .pagination{
+    display: flex;
+    justify-content: center;
+  }
 
 }
 
@@ -116,8 +120,12 @@ cursor: pointer;
 ::-webkit-scrollbar-thumb {
   background-color: white;
 }
-input{
+input,select{
   outline: none;
+}
+select{
+  width: 100%;
+  padding: 10px;
 }
 .m50{
   margin-top: 50px;
@@ -161,4 +169,67 @@ input{
 }
 .mb2{
   margin-bottom: 2px;
+}
+.pagination{
+  position: fixed;
+  bottom: 0;
+  padding: 5px;
+  width: 100%;
+  background-color: white;
+}
+.editBtn{
+  width: 30%;
+  padding: 7px 0;
+  background-color: beige;
+  border: navajowhite;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.redMoreBtn{
+  width: 30%;
+  padding: 7px 0;
+  background-color: #b348ff;
+  border: navajowhite;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+  color: white;
+}
+.deleteBtn{
+  width: 30%;
+  cursor: pointer;
+  padding: 7px 0;
+  background-color: #ff1717f2;
+  border: navajowhite;
+  border-radius: 5px;
+  margin-right: 5px;
+  color: white;
+}
+/* .p10{
+  padding: 10px;
+} */
+input{
+  width: 100%;
+  padding: 10px 0;
+}
+.error{
+  color: red;
+}
+.btnDisable{
+  cursor: not-allowed !important;
+}
+.button {
+  position: relative;
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  background-color: #7d2ae8;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+.button:active {
+  transform: scale(0.96);
 }

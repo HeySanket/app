@@ -4,13 +4,14 @@ import Togle from "../reuseComp/Togle";
 import { useNavigate } from "react-router-dom";
 import GoToTop from "../reuseComp/GoToTop";
 const Blogs = () => {
-  const { blogArr } = useContext(BlogValue);
+  const { blogArr, callApi } = useContext(BlogValue);
   const [catLength, setCatLength] = useState([]);
   const [expandCol, setExpandCol] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    document.title = "Blogs";
 
+  useEffect(() => {
+    callApi();
+    document.title = "Blogs";
     const category = blogArr.map((val, i) => {
       return val.category;
     });
@@ -23,6 +24,7 @@ const Blogs = () => {
     return (
       <div className="dFlex mlr10 flexWrap justify-between">
         {Array.isArray(blogArr) &&
+          blogArr.length > 0 &&
           blogArr
             .filter((val, i) => {
               if (val.category == category) {
@@ -34,9 +36,9 @@ const Blogs = () => {
                 <div
                   className="card bg hover"
                   onClick={() => {
-                    navigate(`${val.id}`);
+                    navigate(`${val._id}`);
                   }}
-                  kry={i}
+                  key={i}
                 >
                   <h2>{val.title}</h2>
                   <p className="mb2">
@@ -61,7 +63,8 @@ const Blogs = () => {
         </span>
       </div>
       {Array.isArray(catLength) &&
-        catLength.map((val, i) => {
+        catLength.length > 0 &&
+        catLength?.map((val, i) => {
           return (
             <Fragment key={i}>
               <Togle category={val} index={i} expandCol={expandCol}>

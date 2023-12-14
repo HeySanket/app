@@ -5,19 +5,44 @@ const Header = () => {
   const [setHideShowscroll, setSetHideShowscroll] = useState(false);
   const navigate = useNavigate();
   const UlVal = (mobileId) => {
-    const liVal = ["Amazon", "ToDo", "CreateBlog", "Blogs", "Home", "Resume"];
+    const liVal = [
+      {
+        link: "Amazon",
+        name: "Amazon",
+      },
+      {
+        link: "ToDo",
+        name: "ToDo",
+      },
+      {
+        link: "CreateBlog",
+        name: "Create Blog",
+      },
+      {
+        link: "Blogs",
+        name: "Blogs",
+      },
+      {
+        link: "Home",
+        name: "Home",
+      },
+      {
+        link: "Resume",
+        name: "Resume",
+      },
+    ];
     return (
       <ul>
         {liVal.map((value, i) => {
           return (
             <NavLink
               className="link"
-              to={`/${value.toLocaleLowerCase()}`}
+              to={`/${value.link.toLocaleLowerCase()}`}
               onClick={() => {}}
               key={i}
             >
               <label htmlFor={mobileId == "mobileId" ? "show" : "abc"}>
-                {value}
+                {value.name}
               </label>
             </NavLink>
           );
@@ -55,8 +80,16 @@ const Header = () => {
               onClick={() => {
                 navigate("/");
               }}
+              className="dFlex"
+              style={{ alignItems: "center" }}
             >
-              LOGO
+              <img
+                src="images/app16.png"
+                width={35}
+                height={35}
+                style={{ marginLeft: "5px" }}
+              />
+              App
             </span>
           </div>
         </div>

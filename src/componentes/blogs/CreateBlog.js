@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BlogValue } from "../context/BlogContext";
 import BlogPagination from "./BlogPagination";
+import axios from "axios";
 
 const CreateBlog = () => {
   const {
@@ -12,13 +13,28 @@ const CreateBlog = () => {
     setBolgEdited,
     editedbolgID,
     setEditedbolgID,
+    callApi,
   } = useContext(BlogValue);
   const [hideShoeForm, setHideShoeForm] = useState(true);
+  const [validation, setValidation] = useState({
+    title: false,
+    description: false,
+    category: false,
+    writer: false,
+  });
+  const [errorMsg, setErrorMsg] = useState({
+    title: "",
+    description: "",
+    category: "",
+    writer: "",
+  });
+  const [btnDisable, setBtnDisable] = useState(true);
   const down = <img className="upDown" src="images/down.png" />;
   const up = <img className="upDown" src="images/up.png" />;
 
   const changeEvent = (e) => {
     const { name, value } = e.target;
+    checkValidation(name, value);
     if (bolgEdited) {
       setBlog({
         ...bolg,
@@ -28,20 +44,103 @@ const CreateBlog = () => {
       setBlog({
         ...bolg,
         [name]: value,
-        id: new Date().getTime().toString(),
       });
     }
   };
+
+  const errorMsgA = (name, value, text) => {
+    setErrorMsg({ ...errorMsg, [name]: text });
+    setValidation({ ...validation, [name]: value });
+  };
+
+  const checkValidation = (name, value) => {
+    switch (name) {
+      case "title":
+        {
+          if (value.length == "") {
+            errorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else if (value.length < 5) {
+            errorMsgA(name, true, "length should be more then 5");
+            setBtnDisable(true);
+          } else {
+            errorMsgA(name, false, "");
+            setBtnDisable(false);
+          }
+        }
+        break;
+      case "writer":
+        {
+          if (value.length == "") {
+            errorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else if (value.length < 5) {
+            errorMsgA(name, true, "length should be more then 5");
+            setBtnDisable(true);
+          } else {
+            errorMsgA(name, false, "");
+            setBtnDisable(false);
+          }
+        }
+        break;
+      case "description":
+        {
+          if (value == "") {
+            errorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else if (value.length < 10) {
+            errorMsgA(name, true, "length should be more then 10");
+            setBtnDisable(true);
+          } else {
+            errorMsgA(name, false, "");
+            setBtnDisable(false);
+          }
+        }
+        break;
+      case "category":
+        {
+          if (value == "") {
+            errorMsgA(name, true, "it should not empty");
+            setBtnDisable(true);
+          } else {
+            errorMsgA(name, false, "");
+            setBtnDisable(false);
+          }
+        }
+        break;
+    }
+  };
+
   const formEvent = (e) => {
     e.preventDefault();
+    console.log(bolg);
     if (bolgEdited) {
-      const newArr = blogArr.map((val, i) => {
-        return val.id == editedbolgID ? bolg : val;
-      });
-      setBlogArr(newArr);
+      axios
+        .put(`${process.env.REACT_APP_BLOG_API_KEY}${editedbolgID}`, bolg)
+        .then((res) => {
+          console.log(res);
+          callApi();
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("All field required");
+        });
+      setBlog({ title: "", description: "", category: "", writer: "" });
+      setBolgEdited(false);
     } else {
       setBlogArr([...blogArr, bolg]);
       setBlog({ title: "", description: "", category: "", writer: "" });
+
+      axios
+        .post(`${process.env.REACT_APP_BLOG_API_KEY}`, bolg)
+        .then((res) => {
+          console.log(res);
+          callApi();
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("All field required");
+        });
     }
   };
 
@@ -75,10 +174,14 @@ const CreateBlog = () => {
                   value={bolg.title}
                   onChange={changeEvent}
                 />
+
                 <span className="searchBtn" onClick={() => formHideShoe()}>
                   {hideShoeForm ? up : down}
                 </span>
               </div>
+              {validation.title && (
+                <span className="error">{errorMsg.title}</span>
+              )}
               {hideShoeForm && (
                 <div>
                   <textarea
@@ -90,14 +193,30 @@ const CreateBlog = () => {
                     className="d_block textarea"
                     onChange={changeEvent}
                   ></textarea>
-                  <input
+                  {validation.description && (
+                    <span className="error">{errorMsg.description}</span>
+                  )}
+                  <select
                     name="category"
-                    type="text"
-                    placeholder="Category"
                     value={bolg.category}
-                    className="d_block"
                     onChange={changeEvent}
-                  />
+                  >
+                    <option>Select</option>
+                    <option>Food blogs</option>
+                    <option>Travel blogs</option>
+                    <option>Lifestyle blogs</option>
+                    <option>Photography blogs</option>
+                    <option>Personal blogs</option>
+                    <option>Parenting blogs</option>
+                    <option>Music blogs</option>
+                    <option>Business blogs</option>
+                    <option>Sports blogs</option>
+                    <option>Movie blogs</option>
+                  </select>
+                  {validation.category && (
+                    <span className="error">{errorMsg.category}</span>
+                  )}
+
                   <input
                     name="writer"
                     placeholder="Writer Name"
@@ -106,7 +225,10 @@ const CreateBlog = () => {
                     className="d_block"
                     onChange={changeEvent}
                   />
-                  <button className="btn" type="submit">
+                  {validation.writer && (
+                    <span className="error">{errorMsg.writer}</span>
+                  )}
+                  <button disabled={btnDisable} className={`btn ${btnDisable && "btnDisable"}`} type="submit">
                     {bolgEdited ? "Edit" : "Create"}
                   </button>
                 </div>

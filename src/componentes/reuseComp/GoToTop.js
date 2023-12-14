@@ -23,7 +23,7 @@ const GoToTop = () => {
     <>
       {topBtn && (
         <div className="upDownPosition label" onClick={goToTop}>
-          <img className="upDown" src="images/up.png" />
+          <img className="upDown" src="images/goToTop.png" />
         </div>
       )}
     </>
