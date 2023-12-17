@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./resume.module.css";
 import UrlTable from "./UrlTable";
-import CreateShortUrl from "./CreateShortUrl";
 import FolderChecker from "./FolderChecker";
+import { UrlValue } from "../context/UrlContext";
 const Resume = () => {
-  const [UrlForm, setUrlForm] = useState(false);
-  const [formNum, setFormNum] = useState(1);
+  const { formNum, setFormNum } = useContext(UrlValue);
   useEffect(() => {
     document.title = "Resume";
   }, []);
 
-  function showCopmponent(val) {
-    console.log(val);
+  function showCopmponent() {
     if (formNum == 1) {
-      return <UrlTable UrlForm={UrlForm} setUrlForm={setUrlForm} />;
+      return <UrlTable />;
     } else {
       return <FolderChecker />;
     }
@@ -22,7 +20,6 @@ const Resume = () => {
   const url = ["Url ShortNer", "Folder Cheaker"];
   return (
     <>
-      {UrlForm && <CreateShortUrl setUrlForm={setUrlForm} />}
       <div style={{ display: "flex", marginTop: 51 }}>
         <div className={`${styles.cr} ${styles.width}`}>
           {Array.isArray(url) &&

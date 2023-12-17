@@ -1,35 +1,71 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
-const CreateShortUrl = ({ setUrlForm }) => {
-  const [data, setData] = useState({});
-
+import { UrlValue } from "../context/UrlContext";
+import styles from "./resume.module.css";
+const CreateShortUrl = () => {
+  const { urlData, setUrlData, setUrlForm, editData, setEditData } =
+    useContext(UrlValue);
   const eventChange = (e) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    setUrlData({ ...urlData, [name]: value });
   };
 
   const formEvent = (e) => {
     e.preventDefault();
-    console.log(data);
-    axios
-      .post("https://appbe.up.railway.app/shortUrl", data)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log(editData, "editData");
+    if (editData) {
+      console.log("edit");
+      axios
+        .put(
+          `${process.env.REACT_APP_SHORTURL_API_KEY}/${urlData._id}`,
+          urlData
+        )
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setEditData(false);
+    } else {
+      axios
+        .post(`${process.env.REACT_APP_SHORTURL_API_KEY}`, urlData)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    setUrlForm(false);
   };
 
+  const changeName = () => {
+    setUrlForm(false);
+    setEditData(false);
+  };
   return ReactDOM.createPortal(
     <>
-      <div className="modal-warper" onClick={() => setUrlForm(false)}></div>
-      <div className="modal-containt">
-        <form onSubmit={formEvent}>
-          <input type="text" name="originalUrl" onChange={eventChange} />
-          <button type="submit">Submit</button>
-        </form>
+      <div className="modal-warper" onClick={changeName}></div>
+      <div className={`modal-containt ${styles.size}`}>
+        <div>
+          <form onSubmit={formEvent}>
+            <h2 style={{ marginBottom: 10 }}>
+              {editData ? "Edit" : "Create"} Short Url
+            </h2>
+            <input
+              type="text"
+              value={urlData.originalUrl}
+              name="originalUrl"
+              onChange={eventChange}
+              className={`${styles.mb5}`}
+            />
+            <button type="submit" className="btn">
+              {editData ? "Edit" : "Create"}
+            </button>
+          </form>
+        </div>
       </div>
     </>,
 

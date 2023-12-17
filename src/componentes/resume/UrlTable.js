@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,6 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { Pagination } from "@mui/material";
+import CreateShortUrl from "./CreateShortUrl";
+import { UrlValue } from "../context/UrlContext";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -21,24 +23,45 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-const UrlTable = ({ setUrlForm, UrlForm }) => {
-  const [data, setData] = React.useState([]);
-  const [pageLength, setPageLength] = React.useState(0);
-  const [pageNumber, setPageageNumber] = React.useState(1);
+const UrlTable = () => {
+  const {
+    data,
+    setData,
+    pageLength,
+    setPageLength,
+    pageNumber,
+    setPageageNumber,
+    editData,
+    setEditData,
+    setUrlForm,
+    UrlForm,
+    setUrlData,
+  } = useContext(UrlValue);
 
-  React.useEffect(() => {
+  const deleteUrl = (id) => {
+    console.log(id);
     axios
-      .get(`https://appbe.up.railway.app/shortUrl?pageNumber=${pageNumber}`)
+      .delete(`${process.env.REACT_APP_SHORTURL_API_KEY}/${id}`)
       .then((result) => {
-        setData(result.data.data);
-        setPageLength(result.data.lastPage);
+        console.log(result);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [pageNumber]);
+  };
+
+  const editUrl = (id) => {
+    console.log(id);
+    setUrlForm(true);
+    setEditData(true);
+    setUrlData(id);
+  };
+
   return (
     <>
+      {UrlForm && (
+        <CreateShortUrl setUrlForm={setUrlForm} editData={editData} />
+      )}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -68,14 +91,22 @@ const UrlTable = ({ setUrlForm, UrlForm }) => {
                 <TableCell align="right">
                   <a
                     target="blank"
-                    href={`http://localhost:9999/shortUrl/${row.shortUrlId}`}
+                    href={`https://appbe.up.railway.app/shortUrl/${row.shortUrlId}`}
                   >
-                    http://localhost:9999/shortUrl/{row.shortUrlId}
+                    hhttps://appbe.up.railway.app/shortUrl/{row.shortUrlId}
                   </a>
                 </TableCell>
                 <TableCell align="right">
-                  <span style={{ color: "red" }}>Delete</span>&nbsp;
-                  <span>Edit</span>
+                  <span
+                    style={{ color: "red" }}
+                    onClick={() => deleteUrl(row._id)}
+                  >
+                    Delete
+                  </span>
+                  &nbsp;
+                  <span style={{ color: "green" }} onClick={() => editUrl(row)}>
+                    Edit
+                  </span>
                 </TableCell>
               </TableRow>
             ))}
