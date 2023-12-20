@@ -44,6 +44,7 @@ const CreateShortUrl = () => {
   const changeName = () => {
     setUrlForm(false);
     setEditData(false);
+    setUrlData({});
   };
   return ReactDOM.createPortal(
     <>

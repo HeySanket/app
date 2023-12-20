@@ -10,7 +10,7 @@ import axios from "axios";
 import { Pagination } from "@mui/material";
 import CreateShortUrl from "./CreateShortUrl";
 import { UrlValue } from "../context/UrlContext";
-
+import { getTime } from "../reuseComp/getTime";
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -51,7 +51,6 @@ const UrlTable = () => {
   };
 
   const editUrl = (id) => {
-    console.log(id);
     setUrlForm(true);
     setEditData(true);
     setUrlData(id);
@@ -82,7 +81,7 @@ const UrlTable = () => {
                 <TableCell component="th" scope="row">
                   {i + 1}
                 </TableCell>
-                <TableCell align="right">{row.createdAt}</TableCell>
+                <TableCell align="right">{getTime(row.createdAt)}</TableCell>
                 <TableCell align="center">
                   <a target="blank" href={row.originalUrl}>
                     {row.originalUrl}

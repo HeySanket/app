@@ -23,12 +23,12 @@ const Header = () => {
         name: "Blogs",
       },
       {
-        link: "Home",
-        name: "Home",
-      },
-      {
         link: "Resume",
         name: "Resume",
+      },
+      {
+        link: "login",
+        name: "Login",
       },
     ];
     return (

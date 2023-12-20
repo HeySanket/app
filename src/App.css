@@ -234,3 +234,6 @@ input{
   transform: scale(0.96);
 }
 
+.alignCenter{
+  justify-content: center;
+}

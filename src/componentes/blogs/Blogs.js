@@ -66,7 +66,7 @@ const Blogs = () => {
         catLength.length > 0 &&
         catLength?.map((val, i) => {
           return (
-            <Fragment key={i}>
+            <Fragment key={i} draggable>
               <Togle category={val} index={i} expandCol={expandCol}>
                 <SingleCat category={val} />
               </Togle>

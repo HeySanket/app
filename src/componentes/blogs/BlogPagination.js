@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { BlogValue } from "../context/BlogContext";
 import { UpperCase } from "../reuseComp/UpperCase";
 import Pagination from "@mui/material/Pagination";
@@ -8,6 +8,8 @@ const BlogPagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openRedMore, setOpenRedMore] = useState(false);
   const [text, setText] = useState(null);
+  const dragStart = useRef(null);
+  const dragEnter = useRef(null);
   const {
     blogArr,
     setBlogArr,
@@ -59,18 +61,38 @@ const BlogPagination = () => {
     setOpenRedMore(!openRedMore);
   };
 
+  const dragEnd = () => {
+    const __blogArr = [...blogArr];
+    __blogArr.splice(dragStart.current, 1);
+    __blogArr.splice(dragEnter.current, 0, blogArr[dragStart.current]);
+    setBlogArr(__blogArr);
+    console.log(dragStart.current, dragEnter.current);
+  };
   return (
     <div>
       {openRedMore && <RedMore text={text} setOpenRedMore={setOpenRedMore} />}
-      <div className="l_parent">
+      <div className="l_parent" style={{ marginBottom: 100 }}>
         {Array.isArray(blogArr) &&
           blogArr.length > 0 &&
           blogArr
-            .slice(currentPage * 12 - 12, currentPage * 12)
+            .slice(currentPage * 8 - 8, currentPage * 8)
             .map((mapVal, i) => {
               return (
-                <div className="card bg" key={i}>
-                  <h2>{UpperCase(mapVal?.title)}</h2>
+                <div
+                  className="card bg"
+                  key={i}
+                  draggable
+                  onDragStart={(e) => (dragStart.current = i)}
+                  onDragEnter={(e) => (dragEnter.current = i)}
+                  onDragEnd={dragEnd}
+                >
+                  <div
+                    className="dFlex"
+                    style={{ justifyContent: "space-between" }}
+                  >
+                    <h2>{mapVal?.title}</h2>
+                    <img src="images/directions.png" height={30} width={30} />
+                  </div>
                   <p>{mapVal?.description.slice(0, 100)}</p>
                   {mapVal?.description.length > 100 ? (
                     <button
@@ -110,5 +132,3 @@ const BlogPagination = () => {
 };
 
 export default React.memo(BlogPagination);
-
-

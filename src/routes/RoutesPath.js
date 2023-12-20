@@ -8,7 +8,7 @@ import SingleProduct from "../componentes/amazon/SingleProduct";
 import CreateBlog from "../componentes/blogs/CreateBlog";
 import RedSingleBlog from "../componentes/blogs/RedSingleBlog";
 import Error from "../componentes/reuseComp/Error";
-import Home from "../componentes/home/Home";
+import Login from "../componentes/login/Login";
 const RoutesPath = () => {
   return (
     <>
@@ -18,7 +18,7 @@ const RoutesPath = () => {
         <Route path="/createblog" element={<CreateBlog />} />
         <Route path="/todo" element={<CreateToDo />} />
         <Route path="/resume" element={<Resume />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/amazon/:id" element={<SingleProduct />} />
         <Route path="/blogs/:id" element={<RedSingleBlog />} />
         <Route path="*" element={<Error />} />
