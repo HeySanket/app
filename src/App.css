@@ -237,3 +237,12 @@ input{
 .alignCenter{
   justify-content: center;
 }
+.anchor{
+  text-decoration: underline;
+  color: #1f76ce;
+  cursor: pointer;
+  text-align: right;
+}
+.anchor:hover{
+  text-decoration: none;
+}

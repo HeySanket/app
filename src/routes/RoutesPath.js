@@ -9,6 +9,7 @@ import CreateBlog from "../componentes/blogs/CreateBlog";
 import RedSingleBlog from "../componentes/blogs/RedSingleBlog";
 import Error from "../componentes/reuseComp/Error";
 import Login from "../componentes/login/Login";
+import ForgotPassword from "../componentes/login/ForgotPassword";
 const RoutesPath = () => {
   return (
     <>
@@ -21,6 +22,7 @@ const RoutesPath = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/amazon/:id" element={<SingleProduct />} />
         <Route path="/blogs/:id" element={<RedSingleBlog />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </>
