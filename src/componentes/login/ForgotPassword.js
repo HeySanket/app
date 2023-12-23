@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -10,23 +10,24 @@ const ForgotPassword = () => {
     ConfirmNewPassword: "",
   });
   const [urlParams, setUrlParams] = useSearchParams();
-  const [gamil, setGmail] = useSearchParams();
+  const [gmail, setGmail] = useSearchParams();
 
   const eventChange = (e) => {
     const { name, value } = e.target;
     setUserPassword({ ...userPassword, [name]: value });
   };
   useEffect(() => {
-    setGmail(urlParams.get("gamil"));
+    setGmail(urlParams.get("gmail"));
+    sessionStorage.setItem("gmail", urlParams.get("gmail"));
+    console.log(urlParams.get("gmail"));
   }, []);
-
   const formEvent = (e) => {
     e.preventDefault();
 
-    if (gamil) {
+    if (gmail) {
       axios
         .put(
-          `${process.env.REACT_APP_FORGOTPASS_API_KEY}?gmail=${gamil}`,
+          `${process.env.REACT_APP_FORGOTPASS_API_KEY}?gmail=${gmail}`,
           userPassword
         )
         .then((result) => {

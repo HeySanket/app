@@ -36,11 +36,7 @@ const Header = () => {
 
     useEffect(() => {
       setPath(sessionStorage.getItem("x-token"));
-      console.log(path, "1");
-      console.log(sessionStorage.getItem("x-token"), "1");
-
       if (!sessionStorage.getItem("x-token")) {
-        console.log(path);
         navigate("/login");
       }
     }, [location.pathname]);
@@ -50,8 +46,6 @@ const Header = () => {
       navigate("/login");
     };
 
-    // {path && value.name != "Login" && value.name}
-    //             {!path && value.name == "Login" && value.name}
     return (
       <ul>
         {liVal.map((value, i) => {

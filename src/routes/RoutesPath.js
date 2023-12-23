@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Amazon from "../componentes/amazon/Amazon";
 import Blogs from "../componentes/blogs/Blogs";
 import Resume from "../componentes/resume/Resume";
@@ -13,14 +13,14 @@ import ForgotPassword from "../componentes/login/ForgotPassword";
 import { useLocation, useNavigate } from "react-router-dom";
 const RoutesPath = () => {
   const [path, setPath] = useState(null);
-  let location = useLocation();
-  let navigate = useNavigate();
-
+  const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     setPath(sessionStorage.getItem("x-token"));
-    console.log(location.pathname);
+
     if (location.pathname == "/forgotPassword") {
-      return navigate("/forgotPassword");
+      const gmail = sessionStorage.getItem("gmail");
+      return navigate(`/forgotPassword?gmail=${gmail}`);
     }
     if (!sessionStorage.getItem("x-token")) {
       navigate("/login");
