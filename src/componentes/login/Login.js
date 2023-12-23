@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [user, setUser] = useState({
     gmail: "",
@@ -9,7 +10,7 @@ const Login = () => {
   });
   const [whichForm, setWhichForm] = useState(false);
   const [forgotPass, setForgotPass] = useState(false);
-
+  const navigate = useNavigate();
   const eventChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -29,6 +30,7 @@ const Login = () => {
 
     if (forgotPass) {
       console.log("forgot");
+      alert("Ckeck Your Email");
       emptyForm();
       return axios
         .get(
@@ -54,12 +56,16 @@ const Login = () => {
       emptyForm();
     } else {
       axios
-        .get(`${process.env.REACT_APP_LOGIN_API_KEY}?gmail=${user.gmail}`)
+        .get(
+          `${process.env.REACT_APP_LOGIN_API_KEY}?gmail=${user.gmail}&password=${user.password}`
+        )
         .then((result) => {
           console.log(result);
+          sessionStorage.setItem("x-token", result.headers["x-token"]);
+          navigate("/");
         })
         .catch((err) => {
-          console.log(err);
+          alert(err.response.data.message);
         });
       console.log("login");
     }
@@ -139,11 +145,12 @@ const Login = () => {
           )}
           <label>Gmail</label>
           <input
-            type="text"
+            type="email"
             onChange={eventChange}
             name="gmail"
             value={user.gmail}
             placeholder="Gmail"
+            required
           />
           {!forgotPass && (
             <>
@@ -157,9 +164,15 @@ const Login = () => {
               />
             </>
           )}
-          {!whichForm && (
+          {!whichForm && !forgotPass && (
             <p className="m0 anchor" onClick={forgetPassword}>
               Forgot Password
+            </p>
+          )}
+          {!whichForm && forgotPass && (
+            <p className="m0">
+              Write that <span style={{ color: "red" }}>Gmail</span> which you
+              used to creacte account
             </p>
           )}
           <button style={{ marginTop: 5 }} className="btn">

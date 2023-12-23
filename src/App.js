@@ -4,7 +4,9 @@ import BlogContext from "./componentes/context/BlogContext";
 import UrlContext from "./componentes/context/UrlContext";
 import RoutesPath from "./routes/RoutesPath";
 import { BrowserRouter } from "react-router-dom";
+
 function App() {
+  
   return (
     <>
       <BrowserRouter>

@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState({
     newPassword: "",
     ConfirmNewPassword: "",
@@ -24,10 +26,11 @@ const ForgotPassword = () => {
     if (gamil) {
       axios
         .put(
-          `https://appbe.up.railway.app/forgotPassword?gmail=${gamil}`,
+          `${process.env.REACT_APP_FORGOTPASS_API_KEY}?gmail=${gamil}`,
           userPassword
         )
         .then((result) => {
+          navigate("/login");
           console.log(result);
         })
         .catch((err) => {
@@ -39,8 +42,8 @@ const ForgotPassword = () => {
       newPassword: "",
       ConfirmNewPassword: "",
     });
-    console.log(userPassword);
   };
+
   return (
     <div className="m65">
       <div

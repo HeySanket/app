@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 const Header = () => {
   const [show, setShow] = useState(false);
   const [setHideShowscroll, setSetHideShowscroll] = useState(false);
   const navigate = useNavigate();
+  let location = useLocation();
+  const [path, setPath] = useState(null);
   const UlVal = (mobileId) => {
     const liVal = [
       {
@@ -31,22 +33,62 @@ const Header = () => {
         name: "Login",
       },
     ];
+
+    useEffect(() => {
+      setPath(sessionStorage.getItem("x-token"));
+      console.log(path, "1");
+      console.log(sessionStorage.getItem("x-token"), "1");
+
+      if (!sessionStorage.getItem("x-token")) {
+        console.log(path);
+        navigate("/login");
+      }
+    }, [location.pathname]);
+
+    const logOut = () => {
+      sessionStorage.removeItem("x-token");
+      navigate("/login");
+    };
+
+    // {path && value.name != "Login" && value.name}
+    //             {!path && value.name == "Login" && value.name}
     return (
       <ul>
         {liVal.map((value, i) => {
           return (
-            <NavLink
-              className="link"
-              to={`/${value.link.toLocaleLowerCase()}`}
-              onClick={() => {}}
-              key={i}
-            >
-              <label htmlFor={mobileId == "mobileId" ? "show" : "abc"}>
-                {value.name}
-              </label>
-            </NavLink>
+            <>
+              {path && value.name != "Login" && (
+                <NavLink
+                  className="link"
+                  to={`/${value.link.toLocaleLowerCase()}`}
+                  onClick={() => {}}
+                  key={i}
+                >
+                  <label htmlFor={mobileId == "mobileId" ? "show" : "abc"}>
+                    {value.name}
+                  </label>
+                </NavLink>
+              )}
+              {!path && value.name == "Login" && (
+                <NavLink
+                  className="link"
+                  to={`/${value.link.toLocaleLowerCase()}`}
+                  onClick={() => {}}
+                  key={i}
+                >
+                  <label htmlFor={mobileId == "mobileId" ? "show" : "abc"}>
+                    {value.name}
+                  </label>
+                </NavLink>
+              )}
+            </>
           );
         })}
+        {path && (
+          <leble className="link" onClick={logOut}>
+            logOut
+          </leble>
+        )}
       </ul>
     );
   };

@@ -14,7 +14,7 @@
 }
 .r_shadow{
     /* width: 25vw; */
-    /* height: 100vh; */
+    height: 100vh !important;
     box-shadow: 3px 0 6px -2px #888;
     display: flex;
     /* justify-content: center; */
