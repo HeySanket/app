@@ -18,6 +18,10 @@ const RoutesPath = () => {
 
   useEffect(() => {
     setPath(sessionStorage.getItem("x-token"));
+    console.log(location.pathname);
+    if (location.pathname == "/forgotPassword") {
+      return navigate("/forgotPassword");
+    }
     if (!sessionStorage.getItem("x-token")) {
       navigate("/login");
     }
@@ -35,11 +39,11 @@ const RoutesPath = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/amazon/:id" element={<SingleProduct />} />
           <Route path="/blogs/:id" element={<RedSingleBlog />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="*" element={<Error />} />
         </Routes>
       ) : (
         <Routes>
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       )}
