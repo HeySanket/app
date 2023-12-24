@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../toDo/todo.css";
+import "../../componentes/amazon/product.css";
 const Login = () => {
   const [user, setUser] = useState({
     gmail: "",
@@ -29,8 +31,7 @@ const Login = () => {
     e.preventDefault();
 
     if (forgotPass) {
-      console.log("forgot");
-      alert("Ckeck Your Email");
+      alert("Ckeck Your Email Account For Link");
       emptyForm();
       return axios
         .get(
@@ -49,6 +50,8 @@ const Login = () => {
         .post(`${process.env.REACT_APP_LOGIN_API_KEY}`, user)
         .then((result) => {
           console.log(result);
+          sessionStorage.setItem("x-token", result.headers["x-token"]);
+          navigate("/");
         })
         .catch((err) => {
           console.log(err);
@@ -67,7 +70,6 @@ const Login = () => {
         .catch((err) => {
           alert(err.response.data.message);
         });
-      console.log("login");
     }
   };
 

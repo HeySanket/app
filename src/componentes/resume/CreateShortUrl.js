@@ -28,6 +28,7 @@ const CreateShortUrl = () => {
           console.log(error);
         });
       setEditData(false);
+      setUrlData(1);
     } else {
       axios
         .post(`${process.env.REACT_APP_SHORTURL_API_KEY}`, urlData)

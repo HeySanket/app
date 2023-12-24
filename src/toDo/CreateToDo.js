@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ToDoList from "./ToDoList";
 import "./todo.css";
 import axiox from "axios";
+import Skeleton from "../componentes/reuseComp/Skeleton";
 const CreateToDo = () => {
   const [todo, setToDo] = useState({
     heading: "",
@@ -29,7 +30,7 @@ const CreateToDo = () => {
 
   const changeEvent = (e) => {
     const { name, value } = e.target;
-    checkError(name, value)
+    checkError(name, value);
     if (editTodo) {
       setToDo({ ...todo, [name]: value });
     } else {
@@ -194,6 +195,7 @@ const CreateToDo = () => {
     }
   }, []);
 
+  const arr = new Array(30).fill(0);
   return (
     <div style={{ marginTop: 50 }} className="t_parent">
       <div className="r_shadow">
@@ -259,12 +261,26 @@ const CreateToDo = () => {
       </div>
 
       <div>
-        <ToDoList
-          todos={todos}
-          search={search}
-          toDoDelete={toDoDelete}
-          toDoEdit={toDoEdit}
-        />
+        {todos.length == 0 ? (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+            }}
+          >
+            {arr.map((val, i) => {
+              return <Skeleton key={i} />;
+            })}
+          </div>
+        ) : (
+          <ToDoList
+            todos={todos}
+            search={search}
+            toDoDelete={toDoDelete}
+            toDoEdit={toDoEdit}
+          />
+        )}
       </div>
     </div>
   );

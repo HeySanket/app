@@ -11,6 +11,7 @@ import { Pagination } from "@mui/material";
 import CreateShortUrl from "./CreateShortUrl";
 import { UrlValue } from "../context/UrlContext";
 import { getTime } from "../reuseComp/getTime";
+import "../amazon/product.css";
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -48,6 +49,7 @@ const UrlTable = () => {
       .catch((error) => {
         console.log(error);
       });
+    setUrlData(id);
   };
 
   const editUrl = (id) => {
@@ -97,13 +99,16 @@ const UrlTable = () => {
                 </TableCell>
                 <TableCell align="right">
                   <span
-                    style={{ color: "red" }}
+                    style={{ color: "red", cursor: "pointer" }}
                     onClick={() => deleteUrl(row._id)}
                   >
                     Delete
                   </span>
                   &nbsp;
-                  <span style={{ color: "green" }} onClick={() => editUrl(row)}>
+                  <span
+                    style={{ color: "green", cursor: "pointer" }}
+                    onClick={() => editUrl(row)}
+                  >
                     Edit
                   </span>
                 </TableCell>

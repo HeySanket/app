@@ -1,16 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import Amazon from "../componentes/amazon/Amazon";
-import Blogs from "../componentes/blogs/Blogs";
-import Resume from "../componentes/resume/Resume";
-import { Routes, Route } from "react-router-dom";
-import CreateToDo from "../toDo/CreateToDo";
-import SingleProduct from "../componentes/amazon/SingleProduct";
-import CreateBlog from "../componentes/blogs/CreateBlog";
-import RedSingleBlog from "../componentes/blogs/RedSingleBlog";
-import Error from "../componentes/reuseComp/Error";
-import Login from "../componentes/login/Login";
-import ForgotPassword from "../componentes/login/ForgotPassword";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
+const Amazon = React.lazy(() => import("../componentes/amazon/Amazon"));
+const ForgotPassword = React.lazy(() =>
+  import("../componentes/login/ForgotPassword")
+);
+const Login = React.lazy(() => import("../componentes/login/Login"));
+const Error = React.lazy(() => import("../componentes/reuseComp/Error"));
+const RedSingleBlog = React.lazy(() =>
+  import("../componentes/blogs/RedSingleBlog")
+);
+const CreateBlog = React.lazy(() => import("../componentes/blogs/CreateBlog"));
+const SingleProduct = React.lazy(() =>
+  import("../componentes/amazon/SingleProduct")
+);
+const CreateToDo = React.lazy(() => import("../toDo/CreateToDo"));
+const Resume = React.lazy(() => import("../componentes/resume/Resume"));
+const Blogs = React.lazy(() => import("../componentes/blogs/Blogs"));
+
 const RoutesPath = () => {
   const [path, setPath] = useState(null);
   const location = useLocation();

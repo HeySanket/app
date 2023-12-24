@@ -75,7 +75,7 @@ const BlogPagination = () => {
         {Array.isArray(blogArr) &&
           blogArr.length > 0 &&
           blogArr
-            .slice(currentPage * 8 - 8, currentPage * 8)
+            .slice(currentPage * 12 - 12, currentPage * 12)
             .map((mapVal, i) => {
               return (
                 <div

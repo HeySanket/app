@@ -10,6 +10,8 @@ const BlogContext = ({ children }) => {
   const callApi = async () => {
     const res = await axios.get(`${process.env.REACT_APP_BLOG_API_KEY}`);
     setBlogArr(res.data.data);
+    console.log(res.data, "dataaaa");
+    console.log(1234567);
   };
 
   useEffect(() => {

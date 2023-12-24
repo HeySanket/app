@@ -19,7 +19,7 @@ const UrlContext = ({ children }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [pageNumber]);
+  }, [pageNumber, urlData]);
   return (
     <UrlValue.Provider
       value={{

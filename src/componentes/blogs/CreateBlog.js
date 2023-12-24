@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { BlogValue } from "../context/BlogContext";
 import BlogPagination from "./BlogPagination";
 import axios from "axios";
-
+import "../../App.css";
+import "../../toDo/todo.css";
 const CreateBlog = () => {
   const {
     blogArr,
@@ -228,7 +229,11 @@ const CreateBlog = () => {
                   {validation.writer && (
                     <span className="error">{errorMsg.writer}</span>
                   )}
-                  <button disabled={btnDisable} className={`btn ${btnDisable && "btnDisable"}`} type="submit">
+                  <button
+                    disabled={btnDisable}
+                    className={`btn ${btnDisable && "btnDisable"}`}
+                    type="submit"
+                  >
                     {bolgEdited ? "Edit" : "Create"}
                   </button>
                 </div>
